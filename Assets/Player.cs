@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -11,6 +12,11 @@ public class Player : MonoBehaviour
     public float maxYOffset = 8.0f;
     public float minYOffset = -8.0f; //vertical not a mirror like X, therefore include a separate value for min Y offset
 
+    [Header("Projectile")]
+    public GameObject bulletPrefab;
+    public Transform bulletSpawn;
+    public float bulletSpeed = 8.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +28,7 @@ public class Player : MonoBehaviour
     {
         HorizontalMovement();
         VerticalMovement();
+        Shoot();
     }
 
     private void HorizontalMovement()
@@ -40,5 +47,15 @@ public class Player : MonoBehaviour
         newPos.y = Mathf.Clamp(newPos.y, minYOffset, maxYOffset);
 
         transform.position = newPos;
+    }
+
+    private void Shoot()
+    {
+        if(Input.GetButtonDown("Fire1"))
+        {
+            GameObject playerBullet = Instantiate(bulletPrefab, bulletSpawn.position, Quaternion.identity);
+            Rigidbody bulletRb = playerBullet.GetComponent<Rigidbody>();
+            bulletRb.velocity = Vector3.forward * bulletSpeed;
+        }
     }
 }
