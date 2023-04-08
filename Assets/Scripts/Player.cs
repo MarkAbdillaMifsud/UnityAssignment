@@ -16,6 +16,9 @@ public class Player : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform bulletSpawn;
     public float bulletSpeed = 8.0f;
+    public float fireRate = 0.9f;
+
+    private bool canFire = true;
 
     // Start is called before the first frame update
     void Start()
@@ -28,7 +31,10 @@ public class Player : MonoBehaviour
     {
         HorizontalMovement();
         VerticalMovement();
-        Shoot();
+        if (Input.GetButtonDown("Fire1") && canFire == true)
+        {
+           StartCoroutine(Shoot());
+        }
     }
 
     private void HorizontalMovement()
@@ -49,13 +55,14 @@ public class Player : MonoBehaviour
         transform.position = newPos;
     }
 
-    private void Shoot()
+    private IEnumerator Shoot()
     {
-        if(Input.GetButtonDown("Fire1"))
-        {
-            GameObject playerBullet = Instantiate(bulletPrefab, bulletSpawn.position, Quaternion.identity);
-            Rigidbody bulletRb = playerBullet.GetComponent<Rigidbody>();
-            bulletRb.velocity = Vector3.forward * bulletSpeed;
-        }
+        GameObject playerBullet = Instantiate(bulletPrefab, bulletSpawn.position, Quaternion.identity);
+        Rigidbody bulletRb = playerBullet.GetComponent<Rigidbody>();
+        bulletRb.velocity = Vector3.forward * bulletSpeed;
+        canFire = false;
+        yield return new WaitForSeconds(fireRate);
+        canFire = true;
     }
+
 }
