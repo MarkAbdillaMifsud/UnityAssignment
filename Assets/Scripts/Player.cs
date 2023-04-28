@@ -74,12 +74,13 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Enemy Bullet")
+        if(collision.gameObject.tag == "Enemy")
+        {
+            Debug.Log("You dead");
+            GameOver();
+        } else if(collision.gameObject.tag == "Enemy Bullet")
         {
             hitPoints--;
-        } else if(collision.gameObject.tag == "Enemy")
-        {
-            hitPoints = 0;
         }
     }
 
