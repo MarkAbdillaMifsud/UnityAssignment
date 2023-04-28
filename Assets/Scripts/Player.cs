@@ -18,6 +18,9 @@ public class Player : MonoBehaviour
     public float bulletSpeed = 8.0f;
     public float fireRate = 0.9f;
 
+    [Header("Game Values")]
+    public int hitPoints = 3;
+
     private bool canFire = true;
 
     // Start is called before the first frame update
@@ -34,6 +37,10 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("Fire1") && canFire == true)
         {
            StartCoroutine(Shoot());
+        }
+        if(hitPoints <= 0)
+        {
+            GameOver();
         }
     }
 
@@ -59,10 +66,25 @@ public class Player : MonoBehaviour
     {
         GameObject playerBullet = Instantiate(bulletPrefab, bulletSpawn.position, Quaternion.identity);
         Rigidbody bulletRb = playerBullet.GetComponent<Rigidbody>();
-        bulletRb.velocity = Vector3.forward * bulletSpeed;
+        bulletRb.velocity = Vector3.up * bulletSpeed;
         canFire = false;
         yield return new WaitForSeconds(fireRate);
         canFire = true;
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Enemy Bullet")
+        {
+            hitPoints--;
+        } else if(collision.gameObject.tag == "Enemy")
+        {
+            hitPoints = 0;
+        }
+    }
+
+    private void GameOver()
+    {
+        Destroy(this.gameObject);
+    }
 }
