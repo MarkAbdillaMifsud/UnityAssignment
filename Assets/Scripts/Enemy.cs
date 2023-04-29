@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
 {
     [Header("Enemy Firing")]
     public GameObject enemyBulletPrefab;
+    public Transform bulletSpawnPoint;
     public float enemyFireRate;
     public float bulletSpeed = 8f;
     [Range(0.1f, 1.0f)]
@@ -37,9 +38,9 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator EnemyFire()
     {
-        GameObject firedBullet = Instantiate(enemyBulletPrefab, gameObject.transform.position, gameObject.transform.rotation);
+        //GameObject firedBullet = Instantiate(enemyBulletPrefab, bulletSpawnPoint);
+        GameObject firedBullet = Instantiate(enemyBulletPrefab, transform.position, Quaternion.identity);
         Rigidbody firedBulletRb = firedBullet.GetComponent<Rigidbody>();
-        firedBulletRb.velocity = Vector3.down * bulletSpeed;
         canFire = false;
         yield return new WaitForSeconds(timeBetweenShots);
         canFire = true;

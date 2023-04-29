@@ -5,6 +5,13 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public float lifetime = 4.0f;
+    public float thrust = 4f;
+
+    private void Start()
+    {
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.AddForce(Vector3.up * thrust, ForceMode.Impulse);
+    }
     private void Update()
     {
         BulletLifetime();

@@ -66,7 +66,6 @@ public class Player : MonoBehaviour
     {
         GameObject playerBullet = Instantiate(bulletPrefab, bulletSpawn.position, Quaternion.identity);
         Rigidbody bulletRb = playerBullet.GetComponent<Rigidbody>();
-        bulletRb.velocity = Vector3.up * bulletSpeed;
         canFire = false;
         yield return new WaitForSeconds(fireRate);
         canFire = true;
