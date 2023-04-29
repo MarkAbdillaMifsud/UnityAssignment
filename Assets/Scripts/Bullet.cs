@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour
 {
     public float lifetime = 4.0f;
     public float thrust = 4f;
+    public ParticleSystem missileImpactVFX;
 
     private void Start()
     {
@@ -19,10 +20,18 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-       if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Player" || collision.gameObject.tag == "Player Bullet" || collision.gameObject.tag == "Enemy Bullet")
+        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Player" || collision.gameObject.tag == "Player Bullet" || collision.gameObject.tag == "Enemy Bullet")
         {
-            Destroy(this.gameObject);
+            ParticleSystem impactVFX = Instantiate(missileImpactVFX, gameObject.transform.position, Quaternion.identity);
+            StartCoroutine(ImpactVFXLifetime(impactVFX));
+            Destroy(gameObject);
         }
+    }
+
+    private IEnumerator ImpactVFXLifetime(ParticleSystem impactVFX)
+    {
+        yield return new WaitForSeconds(impactVFX.main.duration);
+        Destroy(impactVFX.gameObject);
     }
 
     private void BulletLifetime()

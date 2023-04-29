@@ -13,14 +13,17 @@ public class Enemy : MonoBehaviour
     public float fireProbability = 0.5f;
     public float timeBetweenShots = 5f;
 
-    [Header("Enemy Game Values")]
-    public int hitPoints = 3;
+    [Header("Enemy Life Variables")]
+    public float hitPoints = 3;
+    public float halfHealth;
+    public ParticleSystem damagedVFX;
+    public ParticleSystem deathVFX;
 
     private bool canFire = true;
 
     private void Start()
     {
-
+        halfHealth = hitPoints / 2;
     }
 
     private void Update()
@@ -30,8 +33,13 @@ public class Enemy : MonoBehaviour
         {
             StartCoroutine(EnemyFire());
         }
+        if(hitPoints == halfHealth)
+        {
+            damagedVFX.Play();
+        }
         if(hitPoints <= 0)
         {
+            Instantiate(deathVFX, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
         }
     }
@@ -44,6 +52,12 @@ public class Enemy : MonoBehaviour
         canFire = false;
         yield return new WaitForSeconds(timeBetweenShots);
         canFire = true;
+    }
+
+    private IEnumerator DeathVFXTimer()
+    {
+        yield return new WaitForSeconds(deathVFX.main.duration);
+        Destroy(deathVFX);
     }
 
     private void OnCollisionEnter(Collision collision)

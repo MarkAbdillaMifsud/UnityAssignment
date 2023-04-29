@@ -18,15 +18,18 @@ public class Player : MonoBehaviour
     public float bulletSpeed = 8.0f;
     public float fireRate = 0.9f;
 
-    [Header("Game Values")]
+    [Header("Life Variables")]
     public int hitPoints = 3;
+    public float halfHealth;
+    public ParticleSystem damageVFX;
+    public ParticleSystem deathVFX;
 
     private bool canFire = true;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        halfHealth = hitPoints / 2;
     }
 
     // Update is called once per frame
@@ -37,6 +40,10 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("Fire1") && canFire == true)
         {
            StartCoroutine(Shoot());
+        }
+        if(hitPoints == halfHealth)
+        {
+            damageVFX.Play();
         }
         if(hitPoints <= 0)
         {
@@ -75,8 +82,7 @@ public class Player : MonoBehaviour
     {
         if(collision.gameObject.tag == "Enemy")
         {
-            Debug.Log("You dead");
-            GameOver();
+            hitPoints = 0;
         } else if(collision.gameObject.tag == "Enemy Bullet")
         {
             hitPoints--;
@@ -85,6 +91,7 @@ public class Player : MonoBehaviour
 
     private void GameOver()
     {
+        Instantiate(deathVFX, transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }
 }
