@@ -19,17 +19,24 @@ public class Player : MonoBehaviour
     public float fireRate = 0.9f;
 
     [Header("Life Variables")]
+    public int lives = 3;
     public int hitPoints = 3;
-    public float halfHealth;
     public ParticleSystem damageVFX;
     public ParticleSystem deathVFX;
+    public Transform[] respawnPath;
 
+    private int currentHitPoints;
+    private float halfHealth;
     private bool canFire = true;
+    private bool playerIsDead = false;
+    private Rigidbody playerRb;
 
     // Start is called before the first frame update
     void Start()
     {
+        playerRb = GetComponent<Rigidbody>();
         halfHealth = hitPoints / 2;
+        currentHitPoints = hitPoints;
     }
 
     // Update is called once per frame
@@ -39,15 +46,15 @@ public class Player : MonoBehaviour
         VerticalMovement();
         if (Input.GetButtonDown("Fire1") && canFire == true)
         {
-           StartCoroutine(Shoot());
+            StartCoroutine(Shoot());
         }
-        if(hitPoints == halfHealth)
+        if (currentHitPoints == halfHealth)
         {
             damageVFX.Play();
         }
-        if(hitPoints <= 0)
+        if (currentHitPoints <= 0 && !playerIsDead)
         {
-            GameOver();
+            Respawn();
         }
     }
 
@@ -82,16 +89,25 @@ public class Player : MonoBehaviour
     {
         if(collision.gameObject.tag == "Enemy")
         {
-            hitPoints = 0;
+            currentHitPoints = 0;
         } else if(collision.gameObject.tag == "Enemy Bullet")
         {
-            hitPoints--;
+            currentHitPoints--;
         }
     }
 
-    private void GameOver()
+    private void Respawn()
     {
-        Instantiate(deathVFX, transform.position, Quaternion.identity);
-        Destroy(this.gameObject);
+        lives--;
+        deathVFX.Emit(100);
+        if(lives <= 0)
+        {
+            playerIsDead = true;
+        } else
+        {
+            transform.position = respawnPath[0].transform.position;
+            Vector3.MoveTowards(transform.position, respawnPath[1].transform.position, speed * Time.deltaTime);
+            playerIsDead = false;
+        }
     }
 }
