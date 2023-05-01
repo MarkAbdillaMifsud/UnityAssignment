@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
     private float halfHealth;
     private bool canFire = true;
     private bool playerIsDead = false;
+    private bool isRespawning = false;
     private Rigidbody playerRb;
 
     // Start is called before the first frame update
@@ -42,11 +43,14 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HorizontalMovement();
-        VerticalMovement();
-        if (Input.GetButtonDown("Fire1") && canFire == true)
+        if(!isRespawning)
         {
-            StartCoroutine(Shoot());
+            HorizontalMovement();
+            VerticalMovement();
+            if (Input.GetButtonDown("Fire1") && canFire == true)
+            {
+                StartCoroutine(Shoot());
+            }
         }
         if (currentHitPoints == halfHealth)
         {
@@ -98,6 +102,7 @@ public class Player : MonoBehaviour
 
     private void Respawn()
     {
+        isRespawning = true;
         lives--;
         deathVFX.Emit(100);
         if(lives <= 0)
@@ -106,8 +111,9 @@ public class Player : MonoBehaviour
         } else
         {
             transform.position = respawnPath[0].transform.position;
-            Vector3.MoveTowards(transform.position, respawnPath[1].transform.position, speed * Time.deltaTime);
+            //Vector3.MoveTowards(transform.position, respawnPath[1].transform.position, speed * Time.deltaTime);
             playerIsDead = false;
         }
+        isRespawning = false;
     }
 }
