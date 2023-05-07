@@ -5,17 +5,19 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     public GameObject enemyPrefab;
-    public float spawnDelay = 1.0f;
+    public float timeBetweenEnemies = 4.0f;
     public float spawnRadius = 10.0f;
-    public Transform[] wayPoints;
+    public GameObject enemyWaves;
     public float speed = 5.0f;
     
     private Camera gameCamera;
+    private Transform[] wayPoints;
     private float timeSinceLastSpawn = 0.0f;
 
     private void Start()
     {
         gameCamera = Camera.main;
+        wayPoints = enemyWaves.GetComponentsInChildren<Transform>();
     }
 
     void Update()
@@ -24,7 +26,7 @@ public class EnemySpawner : MonoBehaviour
         timeSinceLastSpawn += Time.deltaTime;
 
         // If enough time has passed, spawn a new enemy
-        if (timeSinceLastSpawn >= spawnDelay)
+        if (timeSinceLastSpawn >= timeBetweenEnemies)
         {
             // Reset timeSinceLastSpawn
             timeSinceLastSpawn = 0.0f;
