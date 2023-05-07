@@ -4,66 +4,82 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public GameObject[] wayPoints;
-    public GameObject[] enemyTypes;
-    public int enemyAmount = 5;
-    public float timeBetweenEnemies = 2f;
-
-    public float speed = 3.0f;
-
-    private int wayPointIndex;
-
+    public GameObject enemyPrefab;
+    public float spawnDelay = 1.0f;
+    public float spawnRadius = 10.0f;
+    public Transform[] wayPoints;
+    public float speed = 5.0f;
     
-    void Start()
+    private Camera gameCamera;
+    private float timeSinceLastSpawn = 0.0f;
+
+    private void Start()
     {
-        transform.position = wayPoints[wayPointIndex].transform.position;
-        StartCoroutine(SpawnEnemies());
+        gameCamera = Camera.main;
     }
 
     void Update()
     {
-     
+        // Increment timeSinceLastSpawn by the amount of time since the last frame
+        timeSinceLastSpawn += Time.deltaTime;
+
+        // If enough time has passed, spawn a new enemy
+        if (timeSinceLastSpawn >= spawnDelay)
+        {
+            // Reset timeSinceLastSpawn
+            timeSinceLastSpawn = 0.0f;
+
+            // Choose a random position within spawnRadius of the camera
+            Vector3 cameraPos = gameCamera.transform.position;
+            Vector3 spawnPos = GetOffscreenSpawnPosition(cameraPos);
+
+            // Spawn a new enemy at the chosen position
+            GameObject enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+
+            EnemyMovement(enemy.transform);
+        }
     }
 
-    private IEnumerator FollowPath(GameObject spawnedEnemy)
+    void EnemyMovement(Transform enemyTransform)
     {
-        Transform[] childWayPoints = wayPoints[0].GetComponentsInChildren<Transform>();
-        wayPointIndex = 0;
-
-        while (wayPointIndex < childWayPoints.Length)
+        if(enemyTransform != null)
         {
-            if(Object.ReferenceEquals(spawnedEnemy, null)) //runs only if the enemy is destroyed and avoids MissingReferenceException
+            StartCoroutine(FollowWaypoints(enemyTransform));
+        }
+    }
+
+    IEnumerator FollowWaypoints(Transform enemyTransform)
+    {
+        int currentWaypointIndex = 0;
+
+        while(currentWaypointIndex < wayPoints.Length && enemyTransform != null)
+        {
+            Vector3 currentWaypoint = wayPoints[currentWaypointIndex].position;
+            Vector3 direction = (currentWaypoint - enemyTransform.position).normalized;
+            enemyTransform.position += direction * speed * Time.deltaTime;
+            if(Vector3.Distance(enemyTransform.position, currentWaypoint) < 0.1f)
             {
-                yield break;
-            }
-
-            Vector3 targetPosition = childWayPoints[wayPointIndex].position;
-            spawnedEnemy.transform.position = Vector3.MoveTowards(spawnedEnemy.transform.position, targetPosition, speed * Time.deltaTime);
-
-            if (Vector3.Distance(spawnedEnemy.transform.position, targetPosition) < 0.1f)
-            {
-                Debug.Log("Reached waypoint " + wayPointIndex);
-                wayPointIndex++;
-
-                if (wayPointIndex >= childWayPoints.Length)
-                {
-                    wayPointIndex = 0;
-                }
+                currentWaypointIndex++;
             }
 
             yield return null;
         }
 
-        Debug.Log("Finished path");
+        if(enemyTransform != null)
+        {
+            Destroy(enemyTransform.gameObject);
+        }
     }
 
-    private IEnumerator SpawnEnemies()
+    Vector3 GetOffscreenSpawnPosition(Vector3 cameraPos)
     {
-        for (int i = 0; i < enemyAmount; i++)
-        {
-            GameObject spawnedEnemy = Instantiate(enemyTypes[0], wayPoints[0].transform.GetChild(0).transform.position, enemyTypes[0].transform.rotation);
-            yield return StartCoroutine(FollowPath(spawnedEnemy));
-            yield return new WaitForSeconds(timeBetweenEnemies);
-        }
+        float cameraHeight = 2.0f * gameCamera.orthographicSize;
+        float cameraWidth = cameraHeight * gameCamera.aspect;
+        float spawnOffset = Mathf.Max(cameraWidth, cameraHeight) + spawnRadius;
+
+        Vector2 randomCircle = Random.insideUnitCircle.normalized * spawnOffset;
+        Vector3 spawnPos = new Vector3(randomCircle.x, cameraPos.y + spawnOffset, 0f);
+
+        return spawnPos;
     }
 }

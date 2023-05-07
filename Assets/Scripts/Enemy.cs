@@ -15,9 +15,9 @@ public class Enemy : MonoBehaviour
 
     [Header("Enemy Life Variables")]
     public float hitPoints = 3;
-    public float halfHealth;
     public ParticleSystem damagedVFX;
     public ParticleSystem deathVFX;
+    private float halfHealth;
 
     private bool canFire = true;
 

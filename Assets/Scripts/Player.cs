@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     public int hitPoints = 3;
     public ParticleSystem damageVFX;
     public ParticleSystem deathVFX;
-    public Transform[] respawnPath;
+    public Transform respawnPath;
 
     private int currentHitPoints;
     private float halfHealth;
@@ -110,8 +110,8 @@ public class Player : MonoBehaviour
             playerIsDead = true;
         } else
         {
-            transform.position = respawnPath[0].transform.position;
-            //Vector3.MoveTowards(transform.position, respawnPath[1].transform.position, speed * Time.deltaTime);
+            transform.position = respawnPath.GetChild(0).transform.position;
+            Vector3.MoveTowards(transform.position, respawnPath.GetChild(1).transform.position, speed * Time.deltaTime);
             playerIsDead = false;
         }
         isRespawning = false;
