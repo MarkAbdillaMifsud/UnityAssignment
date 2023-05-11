@@ -32,6 +32,8 @@ public class Player : MonoBehaviour
     private bool playerIsDead = false;
     private bool isRespawning = false;
     private Rigidbody playerRb;
+    private float originalY;
+    private bool hasReachedStartingPos;
 
     // Start is called before the first frame update
     void Start()
@@ -39,20 +41,23 @@ public class Player : MonoBehaviour
         playerRb = GetComponent<Rigidbody>();
         halfHealth = hitPoints / 2;
         currentHitPoints = hitPoints;
+        hasReachedStartingPos = false;
+    }
+    public void SetStartingPosition()
+    {
+        originalY = transform.position.y;
+        hasReachedStartingPos = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!isRespawning)
-        {
             HorizontalMovement();
             VerticalMovement();
             if (Input.GetButtonDown("Fire1") && canFire == true)
             {
                 StartCoroutine(Shoot());
             }
-        }
         if (currentHitPoints == halfHealth)
         {
             damageVFX.Play();
@@ -104,6 +109,14 @@ public class Player : MonoBehaviour
 
     private void Respawn()
     {
+        if(!isRespawning)
+        {
+            StartCoroutine(RespawnProcess());
+        }
+    }
+
+    private IEnumerator RespawnProcess()
+    {
         isRespawning = true;
         lives--;
         deathVFX.Emit(100);
@@ -113,7 +126,11 @@ public class Player : MonoBehaviour
         } else
         {
             transform.position = respawnPath.GetChild(0).transform.position;
-            Vector3.MoveTowards(transform.position, respawnPath.GetChild(1).transform.position, speed * Time.deltaTime);
+            while(Vector3.Distance(transform.position, respawnPath.GetChild(1).transform.position) > 0.1f)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, respawnPath.GetChild(1).transform.position, speed * Time.deltaTime);
+                yield return null;
+            }
             playerIsDead = false;
         }
         isRespawning = false;

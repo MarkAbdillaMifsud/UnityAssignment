@@ -13,11 +13,21 @@ public class EnemySpawner : MonoBehaviour
     private Camera gameCamera;
     private Transform[] wayPoints;
     private float timeSinceLastSpawn = 0.0f;
+    private int numEnemiesSpawned;
+    private GameManager gameManager;
 
     private void Start()
     {
+        gameManager = FindObjectOfType<GameManager>().GetComponent<GameManager>();
+        numEnemiesSpawned = 0;
         gameCamera = Camera.main;
-        wayPoints = enemyWaves.GetComponentsInChildren<Transform>();
+        if(enemyWaves != null)
+        {
+            wayPoints = enemyWaves.GetComponentsInChildren<Transform>();
+        } else
+        {
+            Debug.LogError("Enemy Waves is not assigned in EnemySpawner!");
+        }
     }
 
     void Update()
@@ -26,7 +36,7 @@ public class EnemySpawner : MonoBehaviour
         timeSinceLastSpawn += Time.deltaTime;
 
         // If enough time has passed, spawn a new enemy
-        if (timeSinceLastSpawn >= timeBetweenEnemies)
+        if (timeSinceLastSpawn >= timeBetweenEnemies && numEnemiesSpawned < gameManager.GetMaximumEnemyNumber())
         {
             // Reset timeSinceLastSpawn
             timeSinceLastSpawn = 0.0f;
@@ -35,10 +45,10 @@ public class EnemySpawner : MonoBehaviour
             Vector3 cameraPos = gameCamera.transform.position;
             Vector3 spawnPos = GetOffscreenSpawnPosition(cameraPos);
 
-            // Spawn a new enemy at the chosen position
             GameObject enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
-
             EnemyMovement(enemy.transform);
+            numEnemiesSpawned++;
+            Debug.Log(numEnemiesSpawned);
         }
     }
 
@@ -54,22 +64,18 @@ public class EnemySpawner : MonoBehaviour
     {
         int currentWaypointIndex = 0;
 
-        while(currentWaypointIndex < wayPoints.Length && enemyTransform != null)
+        while (enemyTransform != null)
         {
             Vector3 currentWaypoint = wayPoints[currentWaypointIndex].position;
             Vector3 direction = (currentWaypoint - enemyTransform.position).normalized;
             enemyTransform.position += direction * speed * Time.deltaTime;
-            if(Vector3.Distance(enemyTransform.position, currentWaypoint) < 0.1f)
+
+            if (Vector3.Distance(enemyTransform.position, currentWaypoint) < 0.1f)
             {
-                currentWaypointIndex++;
+                currentWaypointIndex = (currentWaypointIndex + 1) % wayPoints.Length;
             }
 
             yield return null;
-        }
-
-        if(enemyTransform != null)
-        {
-            Destroy(enemyTransform.gameObject);
         }
     }
 
