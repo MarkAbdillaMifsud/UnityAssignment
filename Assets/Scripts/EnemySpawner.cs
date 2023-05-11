@@ -7,7 +7,8 @@ public class EnemySpawner : MonoBehaviour
     public GameObject enemyPrefab;
     public float timeBetweenEnemies = 4.0f;
     public float spawnRadius = 10.0f;
-    public GameObject enemyWaves;
+
+    public GameObject[] enemyWaves;
     public float speed = 5.0f;
     
     private Camera gameCamera;
@@ -21,12 +22,18 @@ public class EnemySpawner : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>().GetComponent<GameManager>();
         numEnemiesSpawned = 0;
         gameCamera = Camera.main;
-        if(enemyWaves != null)
+        if(enemyWaves != null && enemyWaves.Length > 0)
         {
-            wayPoints = enemyWaves.GetComponentsInChildren<Transform>();
+           int randomWaveIndex = Random.Range(0, enemyWaves.Length);
+            Transform waveTransform = enemyWaves[randomWaveIndex].transform;
+            wayPoints = new Transform[waveTransform.childCount];
+            for (int i = 0; i < waveTransform.childCount; i++)
+            {
+                wayPoints[i] = waveTransform.GetChild(i);
+            }
         } else
         {
-            Debug.LogError("Enemy Waves is not assigned in EnemySpawner!");
+            Debug.LogError("Enemy Waves is not assigned in EnemySpawner, or it is empty!");
         }
     }
 
@@ -48,10 +55,21 @@ public class EnemySpawner : MonoBehaviour
             GameObject enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
             EnemyMovement(enemy.transform);
             numEnemiesSpawned++;
-            Debug.Log(numEnemiesSpawned);
+            
+            if (numEnemiesSpawned % 5 == 0)
+            {
+                int randomWaveIndex = Random.Range(0, enemyWaves.Length);
+                Transform waveTransform = enemyWaves[randomWaveIndex].transform;
+                wayPoints = new Transform[waveTransform.childCount];
+                for (int i = 0; i < waveTransform.childCount; i++)
+                {
+                    wayPoints[i] = waveTransform.GetChild(i);
+                }
+            }
         }
     }
 
+    
     void EnemyMovement(Transform enemyTransform)
     {
         if(enemyTransform != null)

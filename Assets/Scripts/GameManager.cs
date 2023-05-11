@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Enemies")]
     public GameObject enemySpawner;
+    [Range(5, 50)]
     public int maxNumOfEnemies;
 
     [Header("UI")]

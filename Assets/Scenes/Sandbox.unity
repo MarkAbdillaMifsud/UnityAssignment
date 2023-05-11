@@ -619,11 +619,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1727619787 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8142763637666604906, guid: bcde41684270bb5499a230fa489ec5c2, type: 3}
-  m_PrefabInstance: {fileID: 8142763636170720673}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1910771001
 GameObject:
   m_ObjectHideFlags: 0
@@ -876,16 +871,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1910771003}
     - target: {fileID: 8142763637544296675, guid: bcde41684270bb5499a230fa489ec5c2, type: 3}
-      propertyPath: enemySpawner
-      value: 
-      objectReference: {fileID: 1727619787}
-    - target: {fileID: 8142763637544296675, guid: bcde41684270bb5499a230fa489ec5c2, type: 3}
       propertyPath: maxNumOfEnemies
-      value: 5
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8142763637544296675, guid: bcde41684270bb5499a230fa489ec5c2, type: 3}
       propertyPath: startingPosition
       value: 
       objectReference: {fileID: 53788179}
+    - target: {fileID: 8142763637666604908, guid: bcde41684270bb5499a230fa489ec5c2, type: 3}
+      propertyPath: enemyWaves.Array.data[0]
+      value: 
+      objectReference: {fileID: 6056900105442054510, guid: 9770affa318406949afd837b8d6152c7, type: 3}
+    - target: {fileID: 8142763637666604908, guid: bcde41684270bb5499a230fa489ec5c2, type: 3}
+      propertyPath: enemyWaves.Array.data[1]
+      value: 
+      objectReference: {fileID: 5944778987109971160, guid: 7ed79cd09d07edd47999232738f54cc9, type: 3}
+    - target: {fileID: 8142763637666604908, guid: bcde41684270bb5499a230fa489ec5c2, type: 3}
+      propertyPath: enemyWaves.Array.data[2]
+      value: 
+      objectReference: {fileID: 5036505559723502851, guid: bef03f27471bc3d43bafab917ad8fd01, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bcde41684270bb5499a230fa489ec5c2, type: 3}

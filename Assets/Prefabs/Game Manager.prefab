@@ -48,7 +48,8 @@ MonoBehaviour:
   playerPrefab: {fileID: 7090969187804568163, guid: 7d92c20277836e246a4b63089cd736ac, type: 3}
   startingPosition: {fileID: 0}
   spawnSpeed: 10
-  enemySpawner: {fileID: 0}
+  enemySpawner: {fileID: 8142763637666604906}
+  maxNumOfEnemies: 5
   scoreText: {fileID: 0}
 --- !u!1 &8142763637666604906
 GameObject:
