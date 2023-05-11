@@ -728,6 +728,7 @@ MonoBehaviour:
   fireProbability: 0.5
   timeBetweenShots: 5
   hitPoints: 3
+  enemyScore: 5
   damagedVFX: {fileID: 1946336491116449567, guid: 573b08fa521265242bf9c894fdba94f7, type: 3}
   deathVFX: {fileID: 6309111182714514812, guid: b89ede664bd004a41bc42178072fead9, type: 3}
 --- !u!1 &1943405258541252

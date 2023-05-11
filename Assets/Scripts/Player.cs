@@ -14,9 +14,10 @@ public class Player : MonoBehaviour
 
     [Header("Projectile")]
     public GameObject bulletPrefab;
-    public Transform bulletSpawn;
+    public Transform[] bulletSpawnPoints;
     public float bulletSpeed = 8.0f;
     public float fireRate = 0.9f;
+    private int bulletSpawnIndex = 0;
 
     [Header("Life Variables")]
     public int lives = 3;
@@ -82,9 +83,10 @@ public class Player : MonoBehaviour
 
     private IEnumerator Shoot()
     {
-        GameObject playerBullet = Instantiate(bulletPrefab, bulletSpawn.position, Quaternion.identity);
+        GameObject playerBullet = Instantiate(bulletPrefab, bulletSpawnPoints[bulletSpawnIndex].position, Quaternion.identity);
         Rigidbody bulletRb = playerBullet.GetComponent<Rigidbody>();
         canFire = false;
+        bulletSpawnIndex = (bulletSpawnIndex + 1) % bulletSpawnPoints.Length; // Increment the spawn point index, or reset it if we've reached the end of the array
         yield return new WaitForSeconds(fireRate);
         canFire = true;
     }

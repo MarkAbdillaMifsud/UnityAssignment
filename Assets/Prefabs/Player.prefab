@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7090969187804568166}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &378570692
 ParticleSystem:
@@ -4694,7 +4694,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7218850166999096922}
   m_Layer: 6
-  m_Name: Bullet Spawn Point
+  m_Name: Bullet Spawn Point (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4714,6 +4714,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7090969187804568166}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3729582898778425832
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 671821155637585495}
+  m_Layer: 6
+  m_Name: Bullet Spawn Point (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &671821155637585495
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3729582898778425832}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.802, y: 0.12, z: 0.338}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7090969187804568166}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7090969187804568163
 GameObject:
@@ -4748,6 +4779,7 @@ Transform:
   m_Children:
   - {fileID: 9048219431526748904}
   - {fileID: 7218850166999096922}
+  - {fileID: 671821155637585495}
   - {fileID: 378570690}
   - {fileID: 2146421547496298014}
   m_Father: {fileID: 0}
@@ -4765,21 +4797,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b98277860c87a748bc5e4652698ec18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  maxXOffset: 12.7
-  maxYOffset: 8
-  minYOffset: -4.1
+  speed: 10
+  maxXOffset: 20
+  maxYOffset: 10
+  minYOffset: -10
   bulletPrefab: {fileID: 4146103756990121176, guid: a763aaca2c192ca49826ef094e3a7700, type: 3}
-  bulletSpawn: {fileID: 7218850166999096922}
+  bulletSpawnPoints: []
   bulletSpeed: 8
   fireRate: 0.9
   lives: 3
   hitPoints: 3
   damageVFX: {fileID: 1946336491116449567, guid: 573b08fa521265242bf9c894fdba94f7, type: 3}
   deathVFX: {fileID: 2267779071674159776}
-  respawnPath:
-  - {fileID: 0}
-  - {fileID: 0}
+  respawnPath: {fileID: 0}
 --- !u!54 &7090969187804568160
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4858,7 +4888,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1975560188507214817, guid: fee5392a60fb82d4fba10c35ab508744, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1975560188507214817, guid: fee5392a60fb82d4fba10c35ab508744, type: 3}
       propertyPath: m_LocalPosition.x

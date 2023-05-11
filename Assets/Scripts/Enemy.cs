@@ -13,17 +13,20 @@ public class Enemy : MonoBehaviour
     public float fireProbability = 0.5f;
     public float timeBetweenShots = 5f;
 
-    [Header("Enemy Life Variables")]
+    [Header("Enemy Game Variables")]
     public float hitPoints = 3;
+    public int enemyScore;
     public ParticleSystem damagedVFX;
     public ParticleSystem deathVFX;
     private float halfHealth;
 
     private bool canFire = true;
+    private GameManager gameManager;
 
     private void Start()
     {
         halfHealth = hitPoints / 2;
+        gameManager = FindObjectOfType<GameManager>().GetComponent<GameManager>();
     }
 
     private void Update()
@@ -40,6 +43,7 @@ public class Enemy : MonoBehaviour
         if(hitPoints <= 0)
         {
             Instantiate(deathVFX, transform.position, Quaternion.identity);
+            gameManager.AddToScore(enemyScore);
             Destroy(this.gameObject);
         }
     }
