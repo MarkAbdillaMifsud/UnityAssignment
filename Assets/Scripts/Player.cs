@@ -15,7 +15,6 @@ public class Player : MonoBehaviour
     [Header("Projectile")]
     public GameObject bulletPrefab;
     public Transform[] bulletSpawnPoints;
-    public float bulletSpeed = 8.0f;
     public float fireRate = 0.9f;
     private int bulletSpawnIndex = 0;
 
@@ -25,6 +24,7 @@ public class Player : MonoBehaviour
     public ParticleSystem damageVFX;
     public ParticleSystem deathVFX;
     public Transform respawnPath;
+    private bool isInvincible = false;
 
     private int currentHitPoints;
     private float halfHealth;
@@ -52,19 +52,22 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (hasReachedStartingPos)
+        {
             HorizontalMovement();
             VerticalMovement();
             if (Input.GetButtonDown("Fire1") && canFire == true)
             {
                 StartCoroutine(Shoot());
             }
-        if (currentHitPoints == halfHealth)
-        {
-            damageVFX.Play();
-        }
-        if (currentHitPoints <= 0 && !playerIsDead)
-        {
-            Respawn();
+            if (currentHitPoints == halfHealth)
+            {
+                damageVFX.Play();
+            }
+            if (currentHitPoints <= 0 && !playerIsDead)
+            {
+                Respawn();
+            }
         }
     }
 
@@ -89,7 +92,6 @@ public class Player : MonoBehaviour
     private IEnumerator Shoot()
     {
         GameObject playerBullet = Instantiate(bulletPrefab, bulletSpawnPoints[bulletSpawnIndex].position, Quaternion.identity);
-        Rigidbody bulletRb = playerBullet.GetComponent<Rigidbody>();
         canFire = false;
         bulletSpawnIndex = (bulletSpawnIndex + 1) % bulletSpawnPoints.Length; // Increment the spawn point index, or reset it if we've reached the end of the array
         yield return new WaitForSeconds(fireRate);
@@ -98,6 +100,11 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (isInvincible)
+        {
+            return;
+        }
+
         if(collision.gameObject.tag == "Enemy")
         {
             currentHitPoints = 0;
@@ -118,6 +125,7 @@ public class Player : MonoBehaviour
     private IEnumerator RespawnProcess()
     {
         isRespawning = true;
+        isInvincible = true;
         lives--;
         deathVFX.Emit(100);
         if(lives <= 0)
@@ -133,6 +141,8 @@ public class Player : MonoBehaviour
             }
             playerIsDead = false;
         }
+        currentHitPoints = hitPoints;
+        isInvincible = false;
         isRespawning = false;
     }
 }

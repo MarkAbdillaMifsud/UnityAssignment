@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour
 {
     public float lifetime = 4.0f;
     public float thrust = 4f;
+    public int bulletDamage = 1;
     public ParticleSystem missileImpactVFX;
 
     private void Start()
@@ -16,6 +17,11 @@ public class Bullet : MonoBehaviour
     private void Update()
     {
         BulletLifetime();
+    }
+
+    public int GetBulletDamage()
+    {
+        return bulletDamage;
     }
 
     private void OnCollisionEnter(Collision collision)

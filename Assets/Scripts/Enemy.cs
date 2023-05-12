@@ -7,11 +7,11 @@ public class Enemy : MonoBehaviour
     [Header("Enemy Firing")]
     public GameObject enemyBulletPrefab;
     public Transform bulletSpawnPoint;
-    public float enemyFireRate;
-    public float bulletSpeed = 8f;
     [Range(0.1f, 1.0f)]
-    public float fireProbability = 0.5f;
+    public float enemyFireRate = 0.9f;
     public float timeBetweenShots = 5f;
+    private Bullet bullet;
+    private float nextFireTime = 0;
 
     [Header("Enemy Game Variables")]
     public float hitPoints = 3;
@@ -27,51 +27,65 @@ public class Enemy : MonoBehaviour
     {
         halfHealth = hitPoints / 2;
         gameManager = FindObjectOfType<GameManager>().GetComponent<GameManager>();
+        bullet = enemyBulletPrefab.GetComponent<Bullet>();
     }
 
     private void Update()
     {
         float r = Random.Range(0.1f, 1.0f);
-        if(r < fireProbability && canFire)
+        if(Time.time >= nextFireTime && canFire)
         {
             StartCoroutine(EnemyFire());
-        }
-        if(hitPoints == halfHealth)
-        {
-            damagedVFX.Play();
-        }
-        if(hitPoints <= 0)
-        {
-            Instantiate(deathVFX, transform.position, Quaternion.identity);
-            gameManager.AddToScore(enemyScore);
-            Destroy(this.gameObject);
+            nextFireTime = Time.time + 1 / enemyFireRate; //calculate time interval between shots
         }
     }
 
     private IEnumerator EnemyFire()
     {
-        //GameObject firedBullet = Instantiate(enemyBulletPrefab, bulletSpawnPoint);
-        GameObject firedBullet = Instantiate(enemyBulletPrefab, transform.position, Quaternion.identity);
+        GameObject firedBullet = Instantiate(enemyBulletPrefab, bulletSpawnPoint);
         Rigidbody firedBulletRb = firedBullet.GetComponent<Rigidbody>();
         canFire = false;
         yield return new WaitForSeconds(timeBetweenShots);
         canFire = true;
     }
 
-    private IEnumerator DeathVFXTimer()
+    private void TakeDamage(int damageAmount)
     {
-        yield return new WaitForSeconds(deathVFX.main.duration);
-        Destroy(deathVFX);
+        hitPoints -= damageAmount;
+
+        if(hitPoints <= halfHealth)
+        {
+            damagedVFX.Play();
+        }
+
+        if(hitPoints <= 0)
+        {
+            EnemyDied();
+        }
+    }
+
+    private void EnemyDied()
+    {
+        ParticleSystem explosion = Instantiate(deathVFX, transform.position, Quaternion.identity);
+        StartCoroutine(ManageEnemyDeath(explosion));
+        gameManager.AddToScore(enemyScore);
+        Destroy(this.gameObject);
+    }
+
+    private IEnumerator ManageEnemyDeath(ParticleSystem explosion)
+    {
+        yield return new WaitForSeconds(explosion.main.duration);
+        Destroy(explosion.gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == "Player Bullet")
         {
-            hitPoints--;
+            TakeDamage(bullet.GetBulletDamage());
         } else if(collision.gameObject.tag == "Player")
         {
-            hitPoints = 0;
+            TakeDamage((int)hitPoints);
         }
     }
 }

@@ -872,7 +872,7 @@ PrefabInstance:
       objectReference: {fileID: 1910771003}
     - target: {fileID: 8142763637544296675, guid: bcde41684270bb5499a230fa489ec5c2, type: 3}
       propertyPath: maxNumOfEnemies
-      value: 15
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8142763637544296675, guid: bcde41684270bb5499a230fa489ec5c2, type: 3}
       propertyPath: startingPosition
