@@ -34,15 +34,18 @@ public class Player : MonoBehaviour
     private Rigidbody playerRb;
     private float originalY;
     private bool hasReachedStartingPos;
+    private GameManager gameManager;
 
     // Start is called before the first frame update
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
+        gameManager = FindObjectOfType<GameManager>().GetComponent<GameManager>();
         halfHealth = hitPoints / 2;
         currentHitPoints = hitPoints;
         hasReachedStartingPos = false;
     }
+
     public void SetStartingPosition()
     {
         originalY = transform.position.y;
@@ -131,6 +134,7 @@ public class Player : MonoBehaviour
         if(lives <= 0)
         {
             playerIsDead = true;
+            gameManager.HandlePlayerDeath();
         } else
         {
             transform.position = respawnPath.GetChild(0).transform.position;

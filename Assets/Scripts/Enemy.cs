@@ -68,7 +68,7 @@ public class Enemy : MonoBehaviour
     {
         ParticleSystem explosion = Instantiate(deathVFX, transform.position, Quaternion.identity);
         StartCoroutine(ManageEnemyDeath(explosion));
-        gameManager.AddToScore(enemyScore);
+        gameManager.EnemyKilled(enemyScore);
         Destroy(this.gameObject);
     }
 

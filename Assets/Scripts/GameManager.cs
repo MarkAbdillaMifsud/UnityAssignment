@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,9 +17,15 @@ public class GameManager : MonoBehaviour
     public GameObject enemySpawner;
     [Range(5, 50)]
     public int maxNumOfEnemies;
+    private int totalEnemiesSpawned = 0;
+    private int totalEnemiesKilled = 0;
+
+    [Header("Game Variables")]
+    private int finalPointsEarned;
 
     [Header("UI")]
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI finalScoreText;
 
     private void Start()
     {
@@ -57,10 +64,45 @@ public class GameManager : MonoBehaviour
         return maxNumOfEnemies;
     }
 
+    public void EnemyKilled(int points)
+    {
+        totalEnemiesKilled++;
+        AddToScore(points);
+
+        float percentageEnemiesKilled = ((float)totalEnemiesKilled / totalEnemiesSpawned) * 100;
+
+        Debug.Log("Percentage killed: " + percentageEnemiesKilled + "%");
+    }
+
+    public void IncreaseTotalEnemiesSpawned()
+    {
+        totalEnemiesSpawned++;
+    }
+
+    public void HandlePlayerDeath()
+    {
+        SceneManager.LoadScene("GameOverScene");
+    }
+
     public void AddToScore(int points)
     {
+        finalPointsEarned += points;
         scoreText.text = "Score " + points;
     }
 
+    public void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
 
+    public void ReloadCurrentScene()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }

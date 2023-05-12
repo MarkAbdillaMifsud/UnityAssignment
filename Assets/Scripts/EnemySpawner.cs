@@ -53,6 +53,7 @@ public class EnemySpawner : MonoBehaviour
             Vector3 spawnPos = GetOffscreenSpawnPosition(cameraPos);
 
             GameObject enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+            gameManager.IncreaseTotalEnemiesSpawned();
             EnemyMovement(enemy.transform);
             numEnemiesSpawned++;
             
