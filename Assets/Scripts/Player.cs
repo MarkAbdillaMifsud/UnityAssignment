@@ -26,6 +26,11 @@ public class Player : MonoBehaviour
     public Transform respawnPath;
     private bool isInvincible = false;
 
+    [Header("Collectibles")]
+    public float shieldDuration = 3.0f;
+    private bool collectibleIsActive = false;
+    private Collectible collectible;
+
     private int currentHitPoints;
     private float halfHealth;
     private bool canFire = true;
@@ -103,18 +108,49 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (isInvincible)
+        if(collision.gameObject.tag == "Collectible" && !collectibleIsActive)
         {
-            return;
+            Collectible collectible = collision.gameObject.GetComponent<Collectible>();
+            AddCollectible(collectible);
         }
 
-        if(collision.gameObject.tag == "Enemy")
+        if(collision.gameObject.tag == "Enemy" && !isInvincible)
         {
             currentHitPoints = 0;
-        } else if(collision.gameObject.tag == "Enemy Bullet")
+        } else if(collision.gameObject.tag == "Enemy Bullet" && !isInvincible)
         {
             currentHitPoints--;
         }
+    }
+
+    private void AddCollectible(Collectible collectible)
+    {
+        string type = collectible.DetermineCollectibleType();
+        switch(type)
+        {
+            case "isHealth":
+                currentHitPoints += 1;
+                break;
+            case "isLife":
+                lives += 1;
+                break;
+            case "isShield":
+                StartCoroutine(SetInvincibility());
+                break;
+            case "isMissile":
+                Debug.Log("Missile picked up");
+                break;
+        }
+    }
+
+    private IEnumerator SetInvincibility()
+    {
+        collectibleIsActive = true;
+        isInvincible = true;
+        yield return new WaitForSeconds(shieldDuration);
+        isInvincible = false;
+        collectibleIsActive = false;
+
     }
 
     private void Respawn()

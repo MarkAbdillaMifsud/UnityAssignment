@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
     private int totalEnemiesSpawned = 0;
     private int totalEnemiesKilled = 0;
 
+    [Header("Collectibles")]
+    public float collectibleDropChance = 0.5f;
+
     [Header("Game Variables")]
     private int finalPointsEarned;
 
@@ -110,6 +113,11 @@ public class GameManager : MonoBehaviour
     public int GetMaximumEnemyNumber()
     {
         return maxNumOfEnemies;
+    }
+
+    public float GetCollectibleDropChance()
+    {
+        return collectibleDropChance;
     }
 
     public void EnemyKilled(int points)

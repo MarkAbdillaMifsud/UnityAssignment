@@ -20,6 +20,10 @@ public class Enemy : MonoBehaviour
     public ParticleSystem deathVFX;
     private float halfHealth;
 
+    [Header("Collectible Variables")]
+    public GameObject[] collectibleTypes;
+    private Collectible collectible;
+
     private bool canFire = true;
     private GameManager gameManager;
 
@@ -28,6 +32,7 @@ public class Enemy : MonoBehaviour
         halfHealth = hitPoints / 2;
         gameManager = FindObjectOfType<GameManager>().GetComponent<GameManager>();
         bullet = enemyBulletPrefab.GetComponent<Bullet>();
+        collectible = FindObjectOfType<Collectible>();
     }
 
     private void Update()
@@ -67,6 +72,7 @@ public class Enemy : MonoBehaviour
     private void EnemyDied()
     {
         ParticleSystem explosion = Instantiate(deathVFX, transform.position, Quaternion.identity);
+        DropCollectible();
         StartCoroutine(ManageEnemyDeath(explosion));
         gameManager.EnemyKilled(enemyScore);
         Destroy(this.gameObject);
@@ -76,6 +82,16 @@ public class Enemy : MonoBehaviour
     {
         yield return new WaitForSeconds(explosion.main.duration);
         Destroy(explosion.gameObject);
+    }
+
+    private void DropCollectible()
+    {
+        float dropChance = Random.Range(0f, 1f);
+        if(dropChance <= gameManager.GetCollectibleDropChance())
+        {
+            int collectibleIndex = Random.Range(0, collectibleTypes.Length);
+            Instantiate(collectibleTypes[collectibleIndex], transform.position, Quaternion.identity);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)

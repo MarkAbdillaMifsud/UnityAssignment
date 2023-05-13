@@ -730,6 +730,10 @@ MonoBehaviour:
   enemyScore: 5
   damagedVFX: {fileID: 1946336491116449567, guid: 573b08fa521265242bf9c894fdba94f7, type: 3}
   deathVFX: {fileID: 6309111182714514812, guid: b89ede664bd004a41bc42178072fead9, type: 3}
+  collectibleTypes:
+  - {fileID: 3246907324582644007, guid: f14472852b29979449c864bcf0016716, type: 3}
+  - {fileID: 3639789911789156899, guid: de99b5ec62d687542b85821f8944b0ed, type: 3}
+  - {fileID: 3344442741290855033, guid: 45a6b5aba8ea9ef4784b621a27424c84, type: 3}
 --- !u!1 &1943405258541252
 GameObject:
   m_ObjectHideFlags: 0
