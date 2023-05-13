@@ -40,12 +40,20 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if(manager != null)
+        if (manager != null)
         {
             Destroy(this.gameObject);
         } else
         {
             manager = this;
+        }
+
+        if(GamePersist.Instance == null)
+        {
+            GameObject persist = new GameObject("GamePersist");
+            persist.AddComponent<GamePersist>();
+            GamePersist.Instance.FinalLives = numOfLives;
+            GamePersist.Instance.FinalPointsEarned = 0;
         }
     }
 
@@ -55,6 +63,8 @@ public class GameManager : MonoBehaviour
         enemySpawner.SetActive(false);
         SpawnNewPlayer();
         StartCoroutine(StartTimer());
+        scoreText.text = "Score: " + GamePersist.Instance.FinalPointsEarned;
+        lifeAmount.text = GamePersist.Instance.FinalLives.ToString();
     }
 
     private void SpawnNewPlayer()
@@ -146,22 +156,22 @@ public class GameManager : MonoBehaviour
 
     public void IncreaseLife()
     {
-        if(numOfLives < maximumNumOfLives)
+        if(GamePersist.Instance.FinalLives < maximumNumOfLives)
         {
-            numOfLives++;
-            lifeAmount.text = numOfLives.ToString();
+            GamePersist.Instance.FinalLives++;
+            lifeAmount.text = GamePersist.Instance.FinalLives.ToString();
         }
     }
 
     public void DecreaseLife()
     {
-        if (numOfLives > 0)
+        if (GamePersist.Instance.FinalLives > 0)
         {
-            numOfLives--;
-            lifeAmount.text = numOfLives.ToString();
+            GamePersist.Instance.FinalLives--;
+            lifeAmount.text = GamePersist.Instance.FinalLives.ToString();
         }
 
-        if (numOfLives <= 0)
+        if (GamePersist.Instance.FinalLives <= 0)
         {
             HandlePlayerDeath();
         }
@@ -175,9 +185,9 @@ public class GameManager : MonoBehaviour
 
     public void AddToScore(int points)
     {
-        finalPointsEarned += points;
-        scoreText.text = "Score " + finalPointsEarned;
-        finalScoreText.text = "Your final score is: " + finalPointsEarned;
+        GamePersist.Instance.FinalPointsEarned += points;
+        scoreText.text = "Score " + GamePersist.Instance.FinalPointsEarned;
+        finalScoreText.text = "Your final score is: " + GamePersist.Instance.FinalPointsEarned;
     }
 
     public void LoadScene(string sceneName)
@@ -195,10 +205,10 @@ public class GameManager : MonoBehaviour
     {
         if (isTimeRanOut)
         {
-            finalScoreText.text = "Your time ran out. Final score is: " + finalPointsEarned;
+            finalScoreText.text = "Your time ran out. Final score is: " + GamePersist.Instance.FinalPointsEarned;
         } else if (isPlayerDefeated)
         {
-            finalScoreText.text = "The enemy overwhelmed you. Final score is: " + finalPointsEarned;
+            finalScoreText.text = "The enemy overwhelmed you. Final score is: " + GamePersist.Instance.FinalPointsEarned;
         }
 
         SceneManager.LoadScene("GameOverScene");

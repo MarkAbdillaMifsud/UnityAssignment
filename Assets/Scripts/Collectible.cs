@@ -12,7 +12,7 @@ public class Collectible : MonoBehaviour
 
     [Header("Collectible Variables")]
     public float forceOfCollectible = 5f;
-    public float lifetime = 10f;
+    public float lifetime = 5f;
     public AudioClip collectibleSFX;
 
     private Rigidbody collectibleRb;
@@ -65,7 +65,7 @@ public class Collectible : MonoBehaviour
         if(collision.gameObject.tag == "Player")
         {
             audioSource.PlayOneShot(collectibleSFX);
-            Destroy(gameObject);
+            Destroy(this.gameObject);
         }
     }
 
