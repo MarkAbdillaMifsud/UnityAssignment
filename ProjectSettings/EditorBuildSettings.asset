@@ -15,9 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Sandbox.unity
     guid: 835bba0c6c68de549bfb575a065f3b07
   - enabled: 1
-    path: Assets/Scenes/GameOverScene.unity
-    guid: 84c6bf33e2e333642a4bacf09b12908a
-  - enabled: 1
     path: Assets/Scenes/VictoryScene.unity
     guid: e2f132377c9d1c1439cf9b8ce3bf1fb6
+  - enabled: 1
+    path: Assets/Scenes/GameOverScene.unity
+    guid: 84c6bf33e2e333642a4bacf09b12908a
   m_configObjects: {}

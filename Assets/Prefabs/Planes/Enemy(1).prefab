@@ -725,10 +725,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyBulletPrefab: {fileID: 6209387181670012528, guid: 7397e75a2b918ba4cb78d4050de9acba, type: 3}
   bulletSpawnPoint: {fileID: 278921487916799316}
-  enemyFireRate: 1
-  timeBetweenShots: 2
+  enemyFireRate: 0.5
+  timeBetweenShots: 5
+  bulletFiredSFX: {fileID: 8300000, guid: f7076eee6cc85d147acbfa9f46fb7772, type: 3}
   hitPoints: 3
-  enemyScore: 5
+  enemyScore: 2
   enemyDeathDelay: 3
   damagedVFX: {fileID: 1946336491116449567, guid: 573b08fa521265242bf9c894fdba94f7, type: 3}
   deathVFX: {fileID: 6309111182714514812, guid: b89ede664bd004a41bc42178072fead9, type: 3}
@@ -737,6 +738,7 @@ MonoBehaviour:
   - {fileID: 3246907324582644007, guid: f14472852b29979449c864bcf0016716, type: 3}
   - {fileID: 3639789911789156899, guid: de99b5ec62d687542b85821f8944b0ed, type: 3}
   - {fileID: 3344442741290855033, guid: 45a6b5aba8ea9ef4784b621a27424c84, type: 3}
+  - {fileID: 3344442741290855033, guid: bb1c3cbfc0fc52b4e941025a8e085db1, type: 3}
 --- !u!82 &1397882544169547815
 AudioSource:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     [Range(0.1f, 1.0f)]
     public float enemyFireRate = 0.9f;
     public float timeBetweenShots = 5f;
+    public AudioClip bulletFiredSFX;
     private Bullet bullet;
     private float nextFireTime = 0;
 
@@ -21,6 +22,7 @@ public class Enemy : MonoBehaviour
     public ParticleSystem deathVFX;
     public AudioClip deathSFX;
     private float halfHealth;
+    private bool isEnteredDeathAnimation = false;
     private Rigidbody enemyRb;
     private Collider enemyCollider;
     private AudioSource audioSource;
@@ -45,11 +47,14 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        float r = Random.Range(0.1f, 1.0f);
-        if(Time.time >= nextFireTime && canFire)
+        if (!isEnteredDeathAnimation)
         {
-            StartCoroutine(EnemyFire());
-            nextFireTime = Time.time + 1 / enemyFireRate; //calculate time interval between shots
+            float r = Random.Range(0.1f, 1.0f);
+            if (Time.time >= nextFireTime && canFire)
+            {
+                StartCoroutine(EnemyFire());
+                nextFireTime = Time.time + 1 / enemyFireRate; //calculate time interval between shots
+            }
         }
     }
 
@@ -57,6 +62,7 @@ public class Enemy : MonoBehaviour
     {
         GameObject firedBullet = Instantiate(enemyBulletPrefab, bulletSpawnPoint);
         Rigidbody firedBulletRb = firedBullet.GetComponent<Rigidbody>();
+        audioSource.PlayOneShot(bulletFiredSFX);
         canFire = false;
         yield return new WaitForSeconds(timeBetweenShots);
         canFire = true;
@@ -80,6 +86,7 @@ public class Enemy : MonoBehaviour
     private void EnemyDied()
     {
         DropCollectible();
+        isEnteredDeathAnimation = true;
         enemyRb.AddForce(Vector3.forward * 10, ForceMode.VelocityChange);
         enemyCollider.enabled = false;
         GameObject coroutineManager = new GameObject("CoroutineManager");

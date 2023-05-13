@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.XR;
 
 public class GameManager : MonoBehaviour
 {
@@ -27,15 +28,15 @@ public class GameManager : MonoBehaviour
     public float collectibleDropChance = 0.5f;
 
     [Header("Game Variables")]
+    public float timeLimit = 60.0f;
     private int finalPointsEarned;
+    private bool isTimeRanOut = false;
+    private bool isPlayerDefeated = false;
 
     [Header("UI")]
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI lifeAmount;
     public TextMeshProUGUI finalScoreText;
-    public Transform livesPanel;
-    public GameObject lifeIconPrefab;
-    public GameObject blankLifeIconPrefab;
-    private GameObject[] lifeIcons;
 
     private void Awake()
     {
@@ -52,9 +53,8 @@ public class GameManager : MonoBehaviour
     {
         firstTimePlayerSpawned = true;
         enemySpawner.SetActive(false);
-        lifeIcons = new GameObject[maximumNumOfLives];
-        PopulateLifePanel();
         SpawnNewPlayer();
+        StartCoroutine(StartTimer());
     }
 
     private void SpawnNewPlayer()
@@ -63,6 +63,20 @@ public class GameManager : MonoBehaviour
         Vector3 spawningPosition = Camera.main.ScreenToWorldPoint(screenSpawningPosition);
         GameObject player = Instantiate(playerPrefab, spawningPosition, transform.rotation);
         StartCoroutine(MovePlayerToStartingPosition(player.transform));
+    }
+
+    private IEnumerator StartTimer()
+    {
+        float timer = 0;
+
+        while(timer < timeLimit)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        isTimeRanOut = true;
+        LoadGamerOverScene();
+        
     }
 
     private IEnumerator MovePlayerToStartingPosition(Transform player)
@@ -82,34 +96,7 @@ public class GameManager : MonoBehaviour
         player.GetComponent<Player>().SetStartingPosition();
     }
 
-    private void PopulateLifePanel()
-    {
-        float spacing = 50f;
-        Vector2 start = new Vector2(-spacing * (maximumNumOfLives - 1) / 2, 0);
-        for (int i = 0; i < maximumNumOfLives; i++)
-        {
-            if (lifeIcons[i] != null)
-            {
-                Destroy(lifeIcons[i]);
-            }
-        }
-
-        for (int i = 0; i < maximumNumOfLives; i++)
-        {
-            GameObject icon;
-            if (i < numOfLives)
-            {
-                icon = Instantiate(lifeIconPrefab);
-                lifeIcons[i] = icon;
-            }
-            else
-            {
-                icon = Instantiate(blankLifeIconPrefab);
-            }
-            icon.transform.SetParent(livesPanel, false);
-            lifeIcons[i] = icon;
-        }
-    }
+    
     public int GetMaximumEnemyNumber()
     {
         return maxNumOfEnemies;
@@ -157,15 +144,40 @@ public class GameManager : MonoBehaviour
         totalEnemiesSpawned++;
     }
 
+    public void IncreaseLife()
+    {
+        if(numOfLives < maximumNumOfLives)
+        {
+            numOfLives++;
+            lifeAmount.text = numOfLives.ToString();
+        }
+    }
+
+    public void DecreaseLife()
+    {
+        if (numOfLives > 0)
+        {
+            numOfLives--;
+            lifeAmount.text = numOfLives.ToString();
+        }
+
+        if (numOfLives <= 0)
+        {
+            HandlePlayerDeath();
+        }
+    }
+
     public void HandlePlayerDeath()
     {
-        SceneManager.LoadScene("GameOverScene");
+        isPlayerDefeated = true;
+        LoadGamerOverScene();
     }
 
     public void AddToScore(int points)
     {
         finalPointsEarned += points;
         scoreText.text = "Score " + finalPointsEarned;
+        finalScoreText.text = "Your final score is: " + finalPointsEarned;
     }
 
     public void LoadScene(string sceneName)
@@ -177,6 +189,19 @@ public class GameManager : MonoBehaviour
     {
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
+    }
+
+    public void LoadGamerOverScene()
+    {
+        if (isTimeRanOut)
+        {
+            finalScoreText.text = "Your time ran out. Final score is: " + finalPointsEarned;
+        } else if (isPlayerDefeated)
+        {
+            finalScoreText.text = "The enemy overwhelmed you. Final score is: " + finalPointsEarned;
+        }
+
+        SceneManager.LoadScene("GameOverScene");
     }
 
     public void QuitGame()

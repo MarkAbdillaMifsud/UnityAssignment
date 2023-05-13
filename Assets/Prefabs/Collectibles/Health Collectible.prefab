@@ -65,7 +65,8 @@ MonoBehaviour:
   isShield: 0
   isMissile: 0
   forceOfCollectible: 5
-  chancesOfCollectibleDropping: 0.5
+  lifetime: 10
+  collectibleSFX: {fileID: 8300000, guid: 82f961d7fe5a21c4d83e28368b2871d8, type: 3}
 --- !u!54 &7087757801247461275
 Rigidbody:
   m_ObjectHideFlags: 0

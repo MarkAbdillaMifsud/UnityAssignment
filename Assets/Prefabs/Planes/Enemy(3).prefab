@@ -7,6 +7,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1032875814646987579, guid: 562bf4b4e128d7c45a1934dac5c19716, type: 3}
+      propertyPath: hitPoints
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1032875814646987579, guid: 562bf4b4e128d7c45a1934dac5c19716, type: 3}
+      propertyPath: enemyScore
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1032875814646987579, guid: 562bf4b4e128d7c45a1934dac5c19716, type: 3}
+      propertyPath: enemyFireRate
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1032875814646987579, guid: 562bf4b4e128d7c45a1934dac5c19716, type: 3}
+      propertyPath: timeBetweenShots
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8761647071890534948, guid: 562bf4b4e128d7c45a1934dac5c19716, type: 3}
       propertyPath: m_RootOrder
       value: 0

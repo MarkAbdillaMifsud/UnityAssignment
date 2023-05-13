@@ -87,6 +87,34 @@ PrefabInstance:
       propertyPath: deathSFX
       value: 
       objectReference: {fileID: 8300000, guid: 8c24dbaff989e9246814539c64dd7f3e, type: 3}
+    - target: {fileID: 8632739613759916863, guid: 0d0d03da39499ca48aca63343c443291, type: 3}
+      propertyPath: hitPoints
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8632739613759916863, guid: 0d0d03da39499ca48aca63343c443291, type: 3}
+      propertyPath: enemyScore
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8632739613759916863, guid: 0d0d03da39499ca48aca63343c443291, type: 3}
+      propertyPath: enemyFireRate
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8632739613759916863, guid: 0d0d03da39499ca48aca63343c443291, type: 3}
+      propertyPath: bulletFiredSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: f7076eee6cc85d147acbfa9f46fb7772, type: 3}
+    - target: {fileID: 8632739613759916863, guid: 0d0d03da39499ca48aca63343c443291, type: 3}
+      propertyPath: timeBetweenShots
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8632739613759916863, guid: 0d0d03da39499ca48aca63343c443291, type: 3}
+      propertyPath: collectibleTypes.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8632739613759916863, guid: 0d0d03da39499ca48aca63343c443291, type: 3}
+      propertyPath: collectibleTypes.Array.data[3]
+      value: 
+      objectReference: {fileID: 3344442741290855033, guid: bb1c3cbfc0fc52b4e941025a8e085db1, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d0d03da39499ca48aca63343c443291, type: 3}
 --- !u!1 &8763654325577647578 stripped

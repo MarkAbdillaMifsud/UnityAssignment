@@ -34,7 +34,6 @@ public class Bullet : MonoBehaviour
             ParticleSystem impactVFX = Instantiate(bulletImpactVFX, gameObject.transform.position, Quaternion.identity);
             audioSource.PlayOneShot(bulletImpactSFX);
             StartCoroutine(ImpactVFXLifetime(impactVFX));
-            Destroy(gameObject);
         }
     }
 
@@ -42,6 +41,7 @@ public class Bullet : MonoBehaviour
     {
         yield return new WaitForSeconds(impactVFX.main.duration);
         Destroy(impactVFX.gameObject);
+        Destroy(gameObject);
     }
 
     private void BulletLifetime()

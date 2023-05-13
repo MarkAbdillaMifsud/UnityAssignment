@@ -12,14 +12,18 @@ public class Collectible : MonoBehaviour
 
     [Header("Collectible Variables")]
     public float forceOfCollectible = 5f;
+    public float lifetime = 10f;
+    public AudioClip collectibleSFX;
 
     private Rigidbody collectibleRb;
+    private AudioSource audioSource;
 
     private void Start()
     {
         DetermineCollectibleType();
         collectibleRb = GetComponent<Rigidbody>();
         collectibleRb.AddForce(Vector3.down * forceOfCollectible);
+        audioSource = GetComponent<AudioSource>();
     }
 
     public string DetermineCollectibleType()
@@ -60,7 +64,13 @@ public class Collectible : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player")
         {
+            audioSource.PlayOneShot(collectibleSFX);
             Destroy(gameObject);
         }
+    }
+
+    private void CollectibleLifetime()
+    {
+        Destroy(this.gameObject, lifetime);
     }
 }

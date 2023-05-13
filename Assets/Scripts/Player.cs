@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     public Transform[] bulletSpawnPoints;
     public Transform missileSpawnPoint;
     public float fireRate = 0.9f;
+    public AudioClip bulletFiredSFX;
     private int bulletSpawnIndex = 0;
     private bool isMissileActive = false;
 
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour
 
     [Header("Collectibles")]
     public float shieldDuration = 3.0f;
+    public GameObject shield;
     private bool collectibleIsActive = false;
     private Collectible collectible;
 
@@ -55,6 +57,7 @@ public class Player : MonoBehaviour
         halfHealth = hitPoints / 2;
         currentHitPoints = hitPoints;
         hasReachedStartingPos = false;
+        shield.gameObject.SetActive(false);
     }
 
     public void SetStartingPosition()
@@ -110,6 +113,7 @@ public class Player : MonoBehaviour
     private IEnumerator Shoot()
     {
         GameObject playerBullet = Instantiate(bulletPrefab, bulletSpawnPoints[bulletSpawnIndex].position, Quaternion.identity);
+        audioSource.PlayOneShot(bulletFiredSFX);
         canFire = false;
         bulletSpawnIndex = (bulletSpawnIndex + 1) % bulletSpawnPoints.Length; // Increment the spawn point index, or reset it if we've reached the end of the array
         yield return new WaitForSeconds(fireRate);
@@ -153,7 +157,7 @@ public class Player : MonoBehaviour
             case "isLife":
                 if(lives < gameManager.GetMaximumLives())
                 {
-                    lives += 1;
+                    gameManager.IncreaseLife();
                 }
                 break;
             case "isShield":
@@ -169,10 +173,11 @@ public class Player : MonoBehaviour
     {
         collectibleIsActive = true;
         isInvincible = true;
+        shield.gameObject.SetActive(true);
         yield return new WaitForSeconds(shieldDuration);
         isInvincible = false;
         collectibleIsActive = false;
-
+        shield.gameObject.SetActive(false);
     }
 
     private void Respawn()
@@ -188,7 +193,7 @@ public class Player : MonoBehaviour
         audioSource.PlayOneShot(deathSFX);
         isRespawning = true;
         isInvincible = true;
-        lives--;
+        gameManager.DecreaseLife();
         deathVFX.Emit(100);
         if(lives <= 0)
         {
