@@ -120,6 +120,11 @@ public class GameManager : MonoBehaviour
         return collectibleDropChance;
     }
 
+    public int GetMaximumLives()
+    {
+        return maximumNumOfLives;
+    }
+
     public void EnemyKilled(int points)
     {
         totalEnemiesKilled++;
@@ -127,7 +132,24 @@ public class GameManager : MonoBehaviour
 
         float percentageEnemiesKilled = ((float)totalEnemiesKilled / totalEnemiesSpawned) * 100;
 
-        Debug.Log("Percentage killed: " + percentageEnemiesKilled + "%");
+        if(totalEnemiesKilled == maxNumOfEnemies)
+        {
+            LoadNextScene();
+        }
+    }
+
+    public void LoadNextScene()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int totalSceneCount = SceneManager.sceneCountInBuildSettings;
+
+        if(currentSceneIndex + 1 < totalSceneCount)
+        {
+            SceneManager.LoadScene(currentSceneIndex + 1);
+        } else
+        {
+            Debug.Log("No more scenes to load!");
+        }
     }
 
     public void IncreaseTotalEnemiesSpawned()

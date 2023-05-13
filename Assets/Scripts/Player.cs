@@ -129,10 +129,16 @@ public class Player : MonoBehaviour
         switch(type)
         {
             case "isHealth":
-                currentHitPoints += 1;
+                if(currentHitPoints < hitPoints)
+                {
+                    currentHitPoints += 1;
+                }
                 break;
             case "isLife":
-                lives += 1;
+                if(lives < gameManager.GetMaximumLives())
+                {
+                    lives += 1;
+                }
                 break;
             case "isShield":
                 StartCoroutine(SetInvincibility());

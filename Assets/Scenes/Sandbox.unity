@@ -956,32 +956,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1864392953}
     - target: {fileID: 8142763637544296675, guid: bcde41684270bb5499a230fa489ec5c2, type: 3}
-      propertyPath: lifeIconPrefab
-      value: 
-      objectReference: {fileID: 6271454751464814589, guid: ebace18589e5ea944ae2a0ad83ad266c, type: 3}
-    - target: {fileID: 8142763637544296675, guid: bcde41684270bb5499a230fa489ec5c2, type: 3}
-      propertyPath: maxNumOfEnemies
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8142763637544296675, guid: bcde41684270bb5499a230fa489ec5c2, type: 3}
       propertyPath: startingPosition
       value: 
       objectReference: {fileID: 53788179}
-    - target: {fileID: 8142763637544296675, guid: bcde41684270bb5499a230fa489ec5c2, type: 3}
-      propertyPath: blankLifeIconPrefab
-      value: 
-      objectReference: {fileID: 1508340784833676091, guid: b4f273e67a35f9f45bba7dcc33352946, type: 3}
-    - target: {fileID: 8142763637666604908, guid: bcde41684270bb5499a230fa489ec5c2, type: 3}
-      propertyPath: enemyWaves.Array.data[0]
-      value: 
-      objectReference: {fileID: 6056900105442054510, guid: 9770affa318406949afd837b8d6152c7, type: 3}
-    - target: {fileID: 8142763637666604908, guid: bcde41684270bb5499a230fa489ec5c2, type: 3}
-      propertyPath: enemyWaves.Array.data[1]
-      value: 
-      objectReference: {fileID: 5944778987109971160, guid: 7ed79cd09d07edd47999232738f54cc9, type: 3}
-    - target: {fileID: 8142763637666604908, guid: bcde41684270bb5499a230fa489ec5c2, type: 3}
-      propertyPath: enemyWaves.Array.data[2]
-      value: 
-      objectReference: {fileID: 5036505559723502851, guid: bef03f27471bc3d43bafab917ad8fd01, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bcde41684270bb5499a230fa489ec5c2, type: 3}

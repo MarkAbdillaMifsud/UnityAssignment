@@ -46,11 +46,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 7090969187804568163, guid: 7d92c20277836e246a4b63089cd736ac, type: 3}
+  numOfLives: 3
+  maximumNumOfLives: 6
   startingPosition: {fileID: 0}
   spawnSpeed: 10
   enemySpawner: {fileID: 8142763637666604906}
   maxNumOfEnemies: 5
-  scoreText: {fileID: 0}
+  collectibleDropChance: 0.5
+  scoreText: {fileID: 5518885476108528879, guid: 3c8a317f432d9f34d994448416856835, type: 3}
+  finalScoreText: {fileID: 3104834615871553886, guid: ab41b4b00bfe5ec45b0ba7dc76037f7f, type: 3}
+  livesPanel: {fileID: 4963035446823933101, guid: 081b2362010cbf24eae0b82167e0c623, type: 3}
+  lifeIconPrefab: {fileID: 6271454751464814589, guid: ebace18589e5ea944ae2a0ad83ad266c, type: 3}
+  blankLifeIconPrefab: {fileID: 1508340784833676091, guid: b4f273e67a35f9f45bba7dcc33352946, type: 3}
 --- !u!1 &8142763637666604906
 GameObject:
   m_ObjectHideFlags: 0
@@ -95,8 +102,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f626986c29f2ae499ea095488091e1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 1940402267846110, guid: 0d0d03da39499ca48aca63343c443291, type: 3}
+  enemyPrefabs:
+  - {fileID: 1940402267846110, guid: 0d0d03da39499ca48aca63343c443291, type: 3}
+  - {fileID: 8763654325577647578, guid: 562bf4b4e128d7c45a1934dac5c19716, type: 3}
+  - {fileID: 6998410521969571882, guid: 708d2c3bb91322a46bc5993abe8affb4, type: 3}
   timeBetweenEnemies: 4
   spawnRadius: 10
-  enemyWaves: {fileID: 6056900105442054510, guid: 9770affa318406949afd837b8d6152c7, type: 3}
+  enemyWaves:
+  - {fileID: 6056900105442054510, guid: 9770affa318406949afd837b8d6152c7, type: 3}
+  - {fileID: 5944778987109971160, guid: 7ed79cd09d07edd47999232738f54cc9, type: 3}
+  - {fileID: 5036505559723502851, guid: bef03f27471bc3d43bafab917ad8fd01, type: 3}
   speed: 5

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public GameObject enemyPrefab;
+    public GameObject[] enemyPrefabs;
     public float timeBetweenEnemies = 4.0f;
     public float spawnRadius = 10.0f;
 
@@ -52,7 +52,8 @@ public class EnemySpawner : MonoBehaviour
             Vector3 cameraPos = gameCamera.transform.position;
             Vector3 spawnPos = GetOffscreenSpawnPosition(cameraPos);
 
-            GameObject enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+            int r = Random.Range(0, enemyPrefabs.Length);
+            GameObject enemy = Instantiate(enemyPrefabs[r], spawnPos, Quaternion.identity);
             gameManager.IncreaseTotalEnemiesSpawned();
             EnemyMovement(enemy.transform);
             numEnemiesSpawned++;

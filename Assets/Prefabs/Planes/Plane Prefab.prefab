@@ -1089,7 +1089,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4155046195482119553}
   m_Layer: 0
-  m_Name: Rafale
+  m_Name: Plane Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
