@@ -7,12 +7,15 @@ public class Bullet : MonoBehaviour
     public float lifetime = 4.0f;
     public float thrust = 4f;
     public int bulletDamage = 1;
-    public ParticleSystem missileImpactVFX;
+    public ParticleSystem bulletImpactVFX;
+    public AudioClip bulletImpactSFX;
+    private AudioSource audioSource;
 
     private void Start()
     {
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.AddForce(Vector3.up * thrust, ForceMode.Impulse);
+        audioSource = GetComponent<AudioSource>();
     }
     private void Update()
     {
@@ -28,7 +31,8 @@ public class Bullet : MonoBehaviour
     {
         if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Player" || collision.gameObject.tag == "Player Bullet" || collision.gameObject.tag == "Enemy Bullet")
         {
-            ParticleSystem impactVFX = Instantiate(missileImpactVFX, gameObject.transform.position, Quaternion.identity);
+            ParticleSystem impactVFX = Instantiate(bulletImpactVFX, gameObject.transform.position, Quaternion.identity);
+            audioSource.PlayOneShot(bulletImpactSFX);
             StartCoroutine(ImpactVFXLifetime(impactVFX));
             Destroy(gameObject);
         }

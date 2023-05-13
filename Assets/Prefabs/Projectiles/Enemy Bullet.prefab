@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -1411269342499472590, guid: a763aaca2c192ca49826ef094e3a7700, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4146103756990121176, guid: a763aaca2c192ca49826ef094e3a7700, type: 3}
       propertyPath: m_Name
       value: Enemy Bullet
@@ -71,5 +75,13 @@ PrefabInstance:
       propertyPath: thrust
       value: -4
       objectReference: {fileID: 0}
+    - target: {fileID: 7385952456819688241, guid: a763aaca2c192ca49826ef094e3a7700, type: 3}
+      propertyPath: bulletImpactSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: a8d90206be3b6644689186ad7e8a7812, type: 3}
+    - target: {fileID: 7385952456819688241, guid: a763aaca2c192ca49826ef094e3a7700, type: 3}
+      propertyPath: bulletImpactVFX
+      value: 
+      objectReference: {fileID: 198000010585806678, guid: 96730f8640590934eacb6f860058e7f9, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a763aaca2c192ca49826ef094e3a7700, type: 3}

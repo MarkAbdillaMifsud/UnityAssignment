@@ -14,15 +14,19 @@ public class Player : MonoBehaviour
 
     [Header("Projectile")]
     public GameObject bulletPrefab;
+    public GameObject missilePrefab;
     public Transform[] bulletSpawnPoints;
+    public Transform missileSpawnPoint;
     public float fireRate = 0.9f;
     private int bulletSpawnIndex = 0;
+    private bool isMissileActive = false;
 
     [Header("Life Variables")]
     public int lives = 3;
     public int hitPoints = 3;
     public ParticleSystem damageVFX;
     public ParticleSystem deathVFX;
+    public AudioClip deathSFX;
     public Transform respawnPath;
     private bool isInvincible = false;
 
@@ -40,12 +44,14 @@ public class Player : MonoBehaviour
     private float originalY;
     private bool hasReachedStartingPos;
     private GameManager gameManager;
+    private AudioSource audioSource;
 
     // Start is called before the first frame update
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
         gameManager = FindObjectOfType<GameManager>().GetComponent<GameManager>();
+        audioSource = GetComponent<AudioSource>();
         halfHealth = hitPoints / 2;
         currentHitPoints = hitPoints;
         hasReachedStartingPos = false;
@@ -64,6 +70,10 @@ public class Player : MonoBehaviour
         {
             HorizontalMovement();
             VerticalMovement();
+            if(Input.GetButtonDown("Fire1") && isMissileActive)
+            {
+                ShootMissile();
+            }
             if (Input.GetButtonDown("Fire1") && canFire == true)
             {
                 StartCoroutine(Shoot());
@@ -106,6 +116,12 @@ public class Player : MonoBehaviour
         canFire = true;
     }
 
+    private void ShootMissile()
+    {
+        GameObject missile = Instantiate(missilePrefab, missileSpawnPoint.position, Quaternion.identity);
+        isMissileActive = false;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == "Collectible" && !collectibleIsActive)
@@ -144,7 +160,7 @@ public class Player : MonoBehaviour
                 StartCoroutine(SetInvincibility());
                 break;
             case "isMissile":
-                Debug.Log("Missile picked up");
+                isMissileActive = true;
                 break;
         }
     }
@@ -169,6 +185,7 @@ public class Player : MonoBehaviour
 
     private IEnumerator RespawnProcess()
     {
+        audioSource.PlayOneShot(deathSFX);
         isRespawning = true;
         isInvincible = true;
         lives--;

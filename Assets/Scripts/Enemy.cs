@@ -16,9 +16,14 @@ public class Enemy : MonoBehaviour
     [Header("Enemy Game Variables")]
     public float hitPoints = 3;
     public int enemyScore;
+    public float enemyDeathDelay = 3.0f;
     public ParticleSystem damagedVFX;
     public ParticleSystem deathVFX;
+    public AudioClip deathSFX;
     private float halfHealth;
+    private Rigidbody enemyRb;
+    private Collider enemyCollider;
+    private AudioSource audioSource;
 
     [Header("Collectible Variables")]
     public GameObject[] collectibleTypes;
@@ -33,6 +38,9 @@ public class Enemy : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>().GetComponent<GameManager>();
         bullet = enemyBulletPrefab.GetComponent<Bullet>();
         collectible = FindObjectOfType<Collectible>();
+        enemyRb = GetComponent<Rigidbody>();
+        enemyCollider = GetComponent<Collider>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -71,17 +79,28 @@ public class Enemy : MonoBehaviour
 
     private void EnemyDied()
     {
-        ParticleSystem explosion = Instantiate(deathVFX, transform.position, Quaternion.identity);
         DropCollectible();
-        StartCoroutine(ManageEnemyDeath(explosion));
-        gameManager.EnemyKilled(enemyScore);
-        Destroy(this.gameObject);
+        enemyRb.AddForce(Vector3.forward * 10, ForceMode.VelocityChange);
+        enemyCollider.enabled = false;
+        GameObject coroutineManager = new GameObject("CoroutineManager");
+        coroutineManager.AddComponent<CoroutineManager>().StartCoroutine(ManageEnemyDeath(coroutineManager, enemyDeathDelay));
     }
 
-    private IEnumerator ManageEnemyDeath(ParticleSystem explosion)
+    private IEnumerator ManageEnemyDeath(GameObject coroutineManager, float delay)
     {
-        yield return new WaitForSeconds(explosion.main.duration);
+        Debug.Log("Coroutine has begun");
+        yield return new WaitForSeconds(delay);
+        Debug.Log("Delay finished");
+        audioSource.PlayOneShot(deathSFX);
+        ParticleSystem explosion = Instantiate(deathVFX, transform.position, Quaternion.identity);
+        gameManager.EnemyKilled(enemyScore);
+        float explosionDuration = explosion.main.duration;
+        yield return new WaitForSeconds(explosionDuration);
+        Debug.Log("Explosion duration finished");
         Destroy(explosion.gameObject);
+        Destroy(this.gameObject);
+        Destroy(coroutineManager);
+        Debug.Log("Everything destroyed");
     }
 
     private void DropCollectible()
