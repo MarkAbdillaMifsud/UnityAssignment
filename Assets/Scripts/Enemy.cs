@@ -95,19 +95,15 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator ManageEnemyDeath(GameObject coroutineManager, float delay)
     {
-        Debug.Log("Coroutine has begun");
         yield return new WaitForSeconds(delay);
-        Debug.Log("Delay finished");
         audioSource.PlayOneShot(deathSFX);
         ParticleSystem explosion = Instantiate(deathVFX, transform.position, Quaternion.identity);
         gameManager.EnemyKilled(enemyScore);
         float explosionDuration = explosion.main.duration;
         yield return new WaitForSeconds(explosionDuration);
-        Debug.Log("Explosion duration finished");
         Destroy(explosion.gameObject);
         Destroy(this.gameObject);
         Destroy(coroutineManager);
-        Debug.Log("Everything destroyed");
     }
 
     private void DropCollectible()

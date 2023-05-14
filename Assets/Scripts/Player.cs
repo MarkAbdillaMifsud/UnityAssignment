@@ -98,7 +98,7 @@ public class Player : MonoBehaviour
 
     private void HorizontalMovement()
     {
-        float horMovement = Input.GetAxis("Horizontal");
+        float horMovement = Input.GetAxis("Horizontal") + Input.GetAxis("HorizontalKeyboard");
         Vector3 newPos = transform.position + Vector3.right * horMovement * speed * Time.deltaTime;
         newPos.x = Mathf.Clamp(newPos.x, -maxXOffset, maxXOffset);
 
@@ -107,7 +107,7 @@ public class Player : MonoBehaviour
 
     private void VerticalMovement()
     {
-        float verMovement = Input.GetAxis("Vertical");
+        float verMovement = Input.GetAxis("Vertical") + Input.GetAxis("VerticalKeyboard"); ;
         Vector3 newPos = transform.position + Vector3.up * verMovement * speed * Time.deltaTime;
         newPos.y = Mathf.Clamp(newPos.y, minYOffset, maxYOffset);
 
@@ -200,7 +200,7 @@ public class Player : MonoBehaviour
         isInvincible = true;
         gameManager.DecreaseLife();
         ParticleSystem deathEffect = Instantiate(deathVFX, deathPosition, Quaternion.identity);
-        deathEffect.Emit(100);
+        Destroy(deathEffect, deathEffect.main.duration);
         hasReachedStartingPos = false;
         if(lives <= 0)
         {
