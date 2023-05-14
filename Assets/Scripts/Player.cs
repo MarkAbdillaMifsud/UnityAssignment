@@ -77,13 +77,17 @@ public class Player : MonoBehaviour
             {
                 ShootMissile();
             }
-            if (Input.GetButtonDown("Fire1") && canFire == true)
+            if (Input.GetButtonDown("Fire1") && canFire == true && !isMissileActive)
             {
                 StartCoroutine(Shoot());
             }
-            if (currentHitPoints == halfHealth)
+            if (currentHitPoints == halfHealth && !damageVFX.isPlaying)
             {
                 damageVFX.Play();
+            }
+            if(currentHitPoints > halfHealth && damageVFX.isPlaying)
+            {
+                damageVFX.Stop();
             }
             if (currentHitPoints <= 0 && !playerIsDead)
             {
@@ -190,11 +194,14 @@ public class Player : MonoBehaviour
 
     private IEnumerator RespawnProcess()
     {
+        Vector3 deathPosition = transform.position;
         audioSource.PlayOneShot(deathSFX);
         isRespawning = true;
         isInvincible = true;
         gameManager.DecreaseLife();
-        deathVFX.Emit(100);
+        ParticleSystem deathEffect = Instantiate(deathVFX, deathPosition, Quaternion.identity);
+        deathEffect.Emit(100);
+        hasReachedStartingPos = false;
         if(lives <= 0)
         {
             playerIsDead = true;
@@ -208,6 +215,7 @@ public class Player : MonoBehaviour
                 yield return null;
             }
             playerIsDead = false;
+            hasReachedStartingPos = true;
         }
         currentHitPoints = hitPoints;
         isInvincible = false;

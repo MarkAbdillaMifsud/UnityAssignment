@@ -60,11 +60,12 @@ public class Collectible : MonoBehaviour
         return "None";
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private IEnumerator OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == "Player")
         {
             audioSource.PlayOneShot(collectibleSFX);
+            yield return new WaitForSeconds(collectibleSFX.length);
             Destroy(this.gameObject);
         }
     }
