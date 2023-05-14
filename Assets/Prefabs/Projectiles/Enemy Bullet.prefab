@@ -73,7 +73,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 5658f2c6b12b39b4bb7393e9c10e70be, type: 2}
     - target: {fileID: 7385952456819688241, guid: a763aaca2c192ca49826ef094e3a7700, type: 3}
       propertyPath: thrust
-      value: -4
+      value: -6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7385952456819688241, guid: a763aaca2c192ca49826ef094e3a7700, type: 3}
+      propertyPath: bulletDamage
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7385952456819688241, guid: a763aaca2c192ca49826ef094e3a7700, type: 3}
       propertyPath: bulletImpactSFX

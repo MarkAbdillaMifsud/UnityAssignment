@@ -4940,7 +4940,7 @@ MonoBehaviour:
   fireRate: 0.9
   bulletFiredSFX: {fileID: 8300000, guid: f7076eee6cc85d147acbfa9f46fb7772, type: 3}
   lives: 3
-  hitPoints: 3
+  hitPoints: 10
   damageVFX: {fileID: 378570692}
   deathVFX: {fileID: 1863297880611526495, guid: fee5392a60fb82d4fba10c35ab508744, type: 3}
   deathSFX: {fileID: 8300000, guid: 8c24dbaff989e9246814539c64dd7f3e, type: 3}
