@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     private int finalPointsEarned;
     private bool isTimeRanOut = false;
     private bool isPlayerDefeated = false;
+    private float timer;
 
     [Header("UI")]
     public TextMeshProUGUI scoreText;
@@ -59,6 +60,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        timer = 0;
         firstTimePlayerSpawned = true;
         enemySpawner.SetActive(false);
         SpawnNewPlayer();
@@ -77,8 +79,6 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator StartTimer()
     {
-        float timer = 0;
-
         while(timer < timeLimit)
         {
             timer += Time.deltaTime;
@@ -91,9 +91,12 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator MovePlayerToStartingPosition(Transform player)
     {
-        while (Vector3.Distance(startingPosition.position, player.position) > 0.05f)
+        Transform targetPosition = startingPosition.GetChild(1);
+        while (Vector3.Distance(targetPosition.position, player.position) > 0.05f)
         {
-            player.Translate(Vector3.up * spawnSpeed * Time.deltaTime);
+            Vector3 direction = (targetPosition.position - player.position).normalized;
+            Debug.Log(Vector3.Distance(startingPosition.position, player.position));
+            player.Translate(direction * spawnSpeed * Time.deltaTime);
             yield return new WaitForEndOfFrame();
         }
 

@@ -71,6 +71,7 @@ public class Player : MonoBehaviour
     {
         if (hasReachedStartingPos)
         {
+            Debug.Log("Reached Starting Pos");
             HorizontalMovement();
             VerticalMovement();
             if(Input.GetButtonDown("Fire1") && isMissileActive)
@@ -209,7 +210,7 @@ public class Player : MonoBehaviour
         } else
         {
             transform.position = respawnPath.GetChild(0).transform.position;
-            while(Vector3.Distance(transform.position, respawnPath.GetChild(1).transform.position) > 0.1f)
+            while(Vector3.Distance(transform.position, respawnPath.GetChild(1).transform.position) > 10.0f)
             {
                 transform.position = Vector3.MoveTowards(transform.position, respawnPath.GetChild(1).transform.position, speed * Time.deltaTime);
                 yield return null;
