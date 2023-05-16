@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     public float speed = 3.0f;
     public float maxXOffset = 8.0f;
     public float maxYOffset = 8.0f;
-    public float minYOffset = -8.0f; //vertical not a mirror like X, therefore include a separate value for min Y offset
+    public float minYOffset = -8.0f;
 
     [Header("Projectile")]
     public GameObject bulletPrefab;
@@ -48,7 +48,6 @@ public class Player : MonoBehaviour
     private GameManager gameManager;
     private AudioSource audioSource;
 
-    // Start is called before the first frame update
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
@@ -66,12 +65,10 @@ public class Player : MonoBehaviour
         hasReachedStartingPos = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (hasReachedStartingPos)
         {
-            Debug.Log("Reached Starting Pos");
             HorizontalMovement();
             VerticalMovement();
             if(Input.GetButtonDown("Fire1") && isMissileActive)

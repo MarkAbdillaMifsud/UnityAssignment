@@ -11,7 +11,7 @@ public class LoopingWorld : MonoBehaviour
         startPosition = transform.position;
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         transform.Translate(Vector3.down * speed * Time.deltaTime);
